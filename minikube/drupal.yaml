@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+  labels:
+    app: drupal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drupal
+  template:
+    metadata:
+      labels:
+        app: drupal
+    spec:
+      containers:
+        - image: usha28/drupal8
+          name: drupal
+          ports:
+            - containerPort: 80
+              name: drupal
+          volumeMounts:
+            - name: drupal-persistent-storage
+              mountPath: /var/www/html/web/sites/default/files
+      volumes:
+        - name: drupal-persistent-storage
+          persistentVolumeClaim:
+            claimName: drupal-pvc3
